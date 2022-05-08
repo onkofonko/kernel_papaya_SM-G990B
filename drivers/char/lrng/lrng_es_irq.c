@@ -16,6 +16,7 @@
 
 #include "lrng_internal.h"
 #include "lrng_es_irq.h"
+#include <linux/ratelimit.h>
 
 /*
  * Number of interrupts to be recorded to assume that DRNG security strength
