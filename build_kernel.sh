@@ -1,9 +1,6 @@
 #!/bin/bash
 
-CHIPSET_NAME=lahaina
 export ARCH=arm64
-export PLATFORM_VERSION=12
-export ANDROID_MAJOR_VERSION=s
 mkdir out
 
 BUILD_CROSS_COMPILE=~/kernel/toolchain/aarch64-linux-android-4.9/bin/aarch64-linux-android-
