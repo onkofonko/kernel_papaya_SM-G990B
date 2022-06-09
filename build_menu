@@ -10,8 +10,8 @@ export ARCH=arm64
 export PLATFORM_VERSION=11
 export ANDROID_MAJOR_VERSION=r
 
-BUILD_CROSS_COMPILE=$PARENT_DIR/aarch64-linux-android-4.9/bin/aarch64-linux-android-
-KERNEL_LLVM_BIN=$PARENT_DIR/llvm-arm-toolchain-ship-10.0/bin/clang
+BUILD_CROSS_COMPILE=$PARENT_DIR/toolchain/aarch64-linux-android-4.9/bin/aarch64-linux-android-
+KERNEL_LLVM_BIN=$PARENT_DIR/toolchain/llvm-arm-toolchain-ship-10.0/bin/clang
 CLANG_TRIPLE=aarch64-linux-gnu-
 KERNEL_MAKE_ENV="CONFIG_BUILD_ARM64_DT_OVERLAY=y"
 
@@ -32,7 +32,7 @@ pause(){
 
 variant(){
   findconfig=""
-  findconfig=($(ls arch/arm64/configs/vendor/afaneh_* 2>/dev/null))
+  findconfig=($(ls arch/arm64/configs/vendor/papaya_* 2>/dev/null))
   declare -i i=1
   shift 2
   for e in "${findconfig[@]}"; do
@@ -54,17 +54,17 @@ variant(){
 }
 
 toolchain(){
-  if [ ! -d $PARENT_DIR/aarch64-linux-android-4.9 ]; then
+  if [ ! -d $PARENT_DIR/toolchain/aarch64-linux-android-4.9 ]; then
     pause 'clone Toolchain aarch64-linux-android-4.9 cross compiler'
-    git clone --branch android-9.0.0_r59 https://android.googlesource.com/platform/prebuilts/gcc/linux-x86/aarch64/aarch64-linux-android-4.9 $PARENT_DIR/aarch64-linux-android-4.9
+    git clone --branch android-9.0.0_r59 https://android.googlesource.com/platform/prebuilts/gcc/linux-x86/aarch64/aarch64-linux-android-4.9 $PARENT_DIR/toolchain/aarch64-linux-android-4.9
     . $DIR/build_menu
   fi
 }
 
 llvm(){
-  if [ ! -d $PARENT_DIR/llvm-arm-toolchain-ship-10.0 ]; then
+  if [ ! -d $PARENT_DIR/toolchain/llvm-arm-toolchain-ship-10.0 ]; then
     pause 'clone Snapdragon LLVM ARM Compiler 10.0'
-    git clone https://github.com/proprietary-stuff/llvm-arm-toolchain-ship-10.0 $PARENT_DIR/llvm-arm-toolchain-ship-10.0
+    git clone https://github.com/proprietary-stuff/llvm-arm-toolchain-ship-10.0 $PARENT_DIR/toolchain/llvm-arm-toolchain-ship-10.0
     . $DIR/build_menu
   fi
 }
@@ -82,7 +82,7 @@ build_kernel(){
   variant
   echo "${GREEN}***** Compiling kernel *****${STD}"
   [ ! -d "out" ] && mkdir out
-  make -j$(nproc) -C $(pwd) O=$(pwd)/out $KERNEL_MAKE_ENV ARCH=arm64 CROSS_COMPILE=$BUILD_CROSS_COMPILE REAL_CC=$KERNEL_LLVM_BIN CLANG_TRIPLE=$CLANG_TRIPLE CONFIG_SECTION_MISMATCH_WARN_ONLY=y vendor/afaneh_${VARIANT}_defconfig
+  make -j$(nproc) -C $(pwd) O=$(pwd)/out $KERNEL_MAKE_ENV ARCH=arm64 CROSS_COMPILE=$BUILD_CROSS_COMPILE REAL_CC=$KERNEL_LLVM_BIN CLANG_TRIPLE=$CLANG_TRIPLE CONFIG_SECTION_MISMATCH_WARN_ONLY=y vendor/papaya_${VARIANT}_defconfig
   make -j$(nproc) -C $(pwd) O=$(pwd)/out $KERNEL_MAKE_ENV ARCH=arm64 CROSS_COMPILE=$BUILD_CROSS_COMPILE REAL_CC=$KERNEL_LLVM_BIN CLANG_TRIPLE=$CLANG_TRIPLE CONFIG_SECTION_MISMATCH_WARN_ONLY=y
 
   [ -e out/arch/arm64/boot/Image.gz ] && cp out/arch/arm64/boot/Image.gz $(pwd)/out/Image.gz
@@ -147,7 +147,7 @@ anykernel3(){
     cd $PARENT_DIR/AnyKernel3
     git reset --hard
     cp $DIR/out/arch/arm64/boot/Image.gz zImage
-    sed -i "s/ExampleKernel by osm0sis/${VARIANT} kernel by afaneh92/g" anykernel.sh
+    sed -i "s/ExampleKernel by osm0sis/${VARIANT} Papaya kernel by OnkoFonko/g" anykernel.sh
     sed -i "s/=maguro/=${VARIANT}/g" anykernel.sh
     sed -i "s/=toroplus/=/g" anykernel.sh
     sed -i "s/=toro/=/g" anykernel.sh
