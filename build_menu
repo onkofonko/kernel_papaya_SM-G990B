@@ -146,7 +146,7 @@ anykernel3(){
   if [ -e $DIR/out/arch/arm64/boot/Image.gz ]; then
     cd $PARENT_DIR/AnyKernel3
     git reset --hard
-    cp $DIR/out/arch/arm64/boot/Image.gz zImage
+    cp $DIR/out/arch/arm64/boot/Image.gz Image.gz
     sed -i "s/ExampleKernel by osm0sis/${VARIANT} Papaya kernel by OnkoFonko/g" anykernel.sh
     sed -i "s/=maguro/=${VARIANT}/g" anykernel.sh
     sed -i "s/=toroplus/=/g" anykernel.sh
@@ -158,7 +158,7 @@ anykernel3(){
     sed -i "s/insert_line/#insert_line/g" anykernel.sh
     sed -i "s/append_file/#append_file/g" anykernel.sh
     sed -i "s/patch_fstab/#patch_fstab/g" anykernel.sh
-    zip -r9 $PARENT_DIR/${VARIANT}_kernel.zip * -x .git README.md *placeholder
+    zip -r9 $PARENT_DIR/papaya_${VARIANT}_kernel.zip * -x .git README.md *placeholder
     cd $DIR
     pause 'continue'
   else
