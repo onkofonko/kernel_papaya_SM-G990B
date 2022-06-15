@@ -192,7 +192,7 @@ static void max77705_fg_periodic_read(struct max77705_fuelgauge_data *fuelgauge)
 }
 #endif
 
-static int max77705_fg_read_vcell(struct max77705_fuelgauge_data *fuelgauge)
+__visible_for_testing int max77705_fg_read_vcell(struct max77705_fuelgauge_data *fuelgauge)
 {
 	u8 data[2];
 	u32 vcell, temp;
@@ -817,7 +817,7 @@ static int max77705_fg_read_iin(struct max77705_fuelgauge_data *fuelgauge,
 	return i_current;
 }
 
-static int max77705_fg_read_vbyp(struct max77705_fuelgauge_data *fuelgauge)
+__visible_for_testing int max77705_fg_read_vbyp(struct max77705_fuelgauge_data *fuelgauge)
 {
 	u8 data[2];
 	u32 vbyp, temp;
@@ -871,7 +871,7 @@ __visible_for_testing int max77705_fg_read_vsys(struct max77705_fuelgauge_data *
 	return vsys;
 }
 
-static int max77705_fg_read_cycle(struct max77705_fuelgauge_data *fuelgauge)
+__visible_for_testing int max77705_fg_read_cycle(struct max77705_fuelgauge_data *fuelgauge)
 {
 	u8 data[2];
 	int ret;
@@ -995,7 +995,7 @@ int max77705_fg_reset_capacity_by_jig_connection(
 				   fuelgauge->battery_data->Capacity - 1);
 }
 
-static int max77705_fg_check_status_reg(struct max77705_fuelgauge_data *fuelgauge)
+__visible_for_testing int max77705_fg_check_status_reg(struct max77705_fuelgauge_data *fuelgauge)
 {
 	u8 status_data[2];
 	int ret = 0;
@@ -1200,7 +1200,7 @@ int max77705_fg_alert_init(struct max77705_fuelgauge_data *fuelgauge, int soc)
 	return 1;
 }
 
-static int max77705_get_fg_soc(struct max77705_fuelgauge_data *fuelgauge)
+__visible_for_testing int max77705_get_fg_soc(struct max77705_fuelgauge_data *fuelgauge)
 {
 	int fg_soc = 0, fg_vcell, avg_current;
 
@@ -1460,7 +1460,7 @@ static void max77705_fg_adjust_capacity_max(
 	}
 }
 
-static unsigned int max77705_fg_get_scaled_capacity(
+__visible_for_testing unsigned int max77705_fg_get_scaled_capacity(
 	struct max77705_fuelgauge_data *fuelgauge, unsigned int soc)
 {
 	soc = (soc < fuelgauge->pdata->capacity_min) ?

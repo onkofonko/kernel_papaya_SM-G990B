@@ -247,6 +247,12 @@ enum ap_vendors {
 	AP_VENDOR_ERR
 };
 
+enum lpm_status {
+	LPM_NO_SUPPORT = -1,
+	LPM_FALSE,
+	LPM_TRUE
+};
+
 #if defined(CONFIG_NFC_FEATURE_SN100U)
 void pn547_register_ese_shutdown(void (*func)(void));
 #endif

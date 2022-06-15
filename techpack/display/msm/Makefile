@@ -232,8 +232,10 @@ msm_drm-$(CONFIG_DISPLAY_SAMSUNG) += samsung/SELF_DISPLAY/self_display_6W3.o \
 	samsung/SELF_DISPLAY/self_display_SW83109_WM6676Z21.o \
 	samsung/SELF_DISPLAY/self_display_HAB_AMB667AN01.o \
 	samsung/SELF_DISPLAY/self_display_HAB_AMB667AN01_A73.o \
+	samsung/SELF_DISPLAY/self_display_A73_S6E3FC3_AMB667BV01.o \
 	samsung/SELF_DISPLAY/self_display_FC3.o \
 	samsung/SELF_DISPLAY/self_display_FAC_AMF670BS01.o
+
 
 msm_drm-$(CONFIG_DISPLAY_SAMSUNG) += samsung/MAFPC/ss_dsi_mafpc_FAB.o \
 	samsung/MAFPC/ss_dsi_mafpc_HAB.o \

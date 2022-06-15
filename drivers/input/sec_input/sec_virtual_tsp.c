@@ -257,6 +257,7 @@ static struct sec_cmd tsp_commands[] = {
 	{SEC_CMD("run_cx_data_read_all", sec_virtual_tsp_switch_cmd),},
 	{SEC_CMD("run_cx_gap_data_rx_all", sec_virtual_tsp_switch_cmd),},
 	{SEC_CMD("run_cx_gap_data_tx_all", sec_virtual_tsp_switch_cmd),},
+	{SEC_CMD("run_factory_miscalibration_read_all", sec_virtual_tsp_switch_cmd),},
 #else
 	/* run_xxx_read_all main(stm) */
 	{SEC_CMD("run_ix_data_read_all", sec_virtual_tsp_main_cmd),},
@@ -264,6 +265,7 @@ static struct sec_cmd tsp_commands[] = {
 	{SEC_CMD("run_cx_data_read_all", sec_virtual_tsp_main_cmd),},
 	{SEC_CMD("run_cx_gap_data_rx_all", sec_virtual_tsp_main_cmd),},
 	{SEC_CMD("run_cx_gap_data_tx_all", sec_virtual_tsp_main_cmd),},
+	{SEC_CMD("run_factory_miscalibration_read_all", sec_virtual_tsp_main_cmd),},
 #endif
 
 #if IS_ENABLED(CONFIG_TOUCHSCREEN_ZINITIX_ZTW522)

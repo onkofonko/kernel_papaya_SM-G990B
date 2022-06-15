@@ -318,14 +318,7 @@ int pdic_notifier_notify(PD_NOTI_TYPEDEF *p_noti, void *pd, int pdic_attach)
 			((PD_NOTI_ATTACH_TYPEDEF *)p_noti)->rprd);
 
 		if (pd != NULL) {
-#if !defined(CONFIG_CABLE_TYPE_NOTIFIER)
-			if (!((PD_NOTI_ATTACH_TYPEDEF *)p_noti)->attach &&
-				((struct pdic_notifier_struct *)pd)->event != PDIC_NOTIFY_EVENT_PDIC_ATTACH) {
-				((struct pdic_notifier_struct *)pd)->event = PDIC_NOTIFY_EVENT_DETACH;
-			}
-#endif
 			pdic_notifier.pdic_template.pd = pd;
-
 			pr_info("%s: PD event:%d, num:%d, sel:%d \n", __func__,
 				((struct pdic_notifier_struct *)pd)->event,
 				((struct pdic_notifier_struct *)pd)->sink_status.available_pdo_num,

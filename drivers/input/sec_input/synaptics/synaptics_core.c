@@ -912,13 +912,10 @@ void synaptics_ts_remove_device(struct synaptics_ts_data *ts)
  * If you are requested additional i2c protocol in interrupt handler by vendor.
  * please add it in synaptics_ts_external_func.
  */
- #if 0
-static void synaptics_ts_external_func(struct synaptics_ts_data *ts)
+void synaptics_ts_external_func(struct synaptics_ts_data *ts)
 {
 	sec_input_set_temperature(&ts->client->dev, SEC_INPUT_SET_TEMPERATURE_IN_IRQ);
-
 }
- #endif
 
 int synaptics_ts_input_open(struct input_dev *dev)
 {
@@ -950,7 +947,7 @@ int synaptics_ts_input_open(struct input_dev *dev)
 			input_err(true, &ts->client->dev, "%s: Failed to start device\n", __func__);
 	}
 
-	//sec_input_set_temperature(ts->client, SEC_INPUT_SET_TEMPERATURE_FORCE);
+	sec_input_set_temperature(&ts->client->dev, SEC_INPUT_SET_TEMPERATURE_FORCE);
 
 	mutex_unlock(&ts->modechange);
 
@@ -1249,7 +1246,8 @@ static int synaptics_ts_init(struct i2c_client *client)
 	ts->plat_data->init = synaptics_ts_reinit;
 	ts->plat_data->lpmode = synaptics_ts_set_lowpowermode;
 	ts->plat_data->set_grip_data = synaptics_set_grip_data_to_ic;
-	ts->plat_data->set_temperature = synaptics_ts_set_temperature;
+	if (!ts->plat_data->not_support_temp_noti)
+		ts->plat_data->set_temperature = synaptics_ts_set_temperature;
 
 	ptsp = &client->dev;
 

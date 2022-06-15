@@ -140,6 +140,19 @@ void usbpd_set_host_on(struct if_cb_manager *man_core, int mode)
 }
 EXPORT_SYMBOL(usbpd_set_host_on);
 
+void usbpd_hiccup_cc_command(struct if_cb_manager *man_core, int is_off)
+{
+	if (man_core == NULL || man_core->usbpd_d == NULL ||
+			man_core->usbpd_d->ops == NULL ||
+			man_core->usbpd_d->ops->usbpd_hiccup_cc_command == NULL) {
+			pr_err("%s : Member of if_cb_manager is NULL\n", __func__);
+		return;
+	}
+
+	man_core->usbpd_d->ops->usbpd_hiccup_cc_command(is_off);
+}
+EXPORT_SYMBOL(usbpd_hiccup_cc_command);
+
 static int __init if_cb_manager_init(void)
 {
 	if (!man_core)

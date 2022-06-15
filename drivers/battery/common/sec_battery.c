@@ -203,6 +203,7 @@ char *sec_bat_charge_mode_str[] = {
 	"UNO-On",
 	"UNO-Off",
 	"UNO-Only",
+	"Not-Set",
 	"Max",
 };
 
@@ -894,7 +895,7 @@ int sec_bat_set_charge(void * data, int chg_mode)
 	union power_supply_propval val = {0, };
 	struct timespec64 ts = {0, };
 
-	if (chg_mode == SEC_BAT_CHG_MODE_UNO_ONLY) {
+	if (chg_mode == SEC_BAT_CHG_MODE_NOT_SET) {
 		pr_info("%s: temp mode for decrease 5v\n", __func__);
 		return chg_mode;
 	}
@@ -6317,8 +6318,8 @@ static int usb_typec_handle_after_id(struct sec_battery_info *battery, int cable
 #if defined(CONFIG_WIRELESS_TX_MODE)
 	if (!is_hv_wire_type(cable_type) &&
 		!is_hv_pdo_wire_type(cable_type, battery->hv_pdo)) {
-		sec_vote(battery->chgen_vote, VOTER_CHANGE_CHGMODE, false, SEC_BAT_CHG_MODE_UNO_ONLY);
-		sec_vote(battery->iv_vote, VOTER_CHANGE_CHGMODE, false, SEC_INPUT_VOLTAGE_5V);
+		sec_vote(battery->chgen_vote, VOTER_CHANGE_CHGMODE, false, 0);
+		sec_vote(battery->iv_vote, VOTER_CHANGE_CHGMODE, false, 0);
 	}
 #endif
 

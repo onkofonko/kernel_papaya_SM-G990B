@@ -123,7 +123,7 @@ int32_t stk3a8x_request_registry(struct stk3a8x_data *alps_data)
 	loff_t pos;
 	info_flicker("start\n");
 	memset(file_out_buf, 0, FILE_SIZE);
-	cali_file = filp_open(STK3A8X_CALI_FILE, O_CREAT | O_RDWR, 0644);
+	//cali_file = filp_open(STK3A8X_CALI_FILE, O_CREAT | O_RDWR, 0644);
 
 	if (IS_ERR(cali_file))
 	{
@@ -138,7 +138,7 @@ int32_t stk3a8x_request_registry(struct stk3a8x_data *alps_data)
 		pos = 0;
 		vfs_read(cali_file, file_out_buf, sizeof(file_out_buf), &pos);
 		set_fs(fs);
-		filp_close(cali_file, NULL);
+		//filp_close(cali_file, NULL);
 	}
 
 	memcpy(&alps_data->cali_info.cali_para.als_version, file_out_buf, FILE_SIZE);
@@ -159,7 +159,7 @@ int32_t stk3a8x_update_registry(struct stk3a8x_data *alps_data)
 	info_flicker("start\n");
 	memset(file_buf, 0, FILE_SIZE);
 	memcpy(file_buf, &alps_data->cali_info.cali_para.als_version, FILE_SIZE);
-	cali_file = filp_open(STK3A8X_CALI_FILE, O_CREAT | O_RDWR, 0666);
+	//cali_file = filp_open(STK3A8X_CALI_FILE, O_CREAT | O_RDWR, 0666);
 
 	if (IS_ERR(cali_file))
 	{
@@ -176,7 +176,7 @@ int32_t stk3a8x_update_registry(struct stk3a8x_data *alps_data)
 		set_fs(fs);
 	}
 
-	filp_close(cali_file, NULL);
+	//filp_close(cali_file, NULL);
 	info_flicker("Done\n");
 	return 0;
 }

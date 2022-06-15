@@ -447,6 +447,30 @@ static bool sm5451_check_charging_enable(struct sm5451_charger *sm5451)
 	}
 }
 
+static int sm5451_prechg_enable(struct sm5451_charger *sm5451, bool enable)
+{
+	struct sm_dc_info *sm_dc = select_sm_dc_info(sm5451);
+	int state = sm_dc_get_current_state(sm_dc);
+
+	if (enable) {
+		if (state > SM_DC_EOC || sm5451_check_charging_enable(sm5451)) {
+			dev_info(sm5451->dev, "%s: charging state (state=%d)\n", __func__, state);
+		} else {
+			sm5451_write_reg(sm5451, SM5451_REG_PRECHG_MODE, 0xEA);
+			sm5451_write_reg(sm5451, SM5451_REG_PRECHG_MODE, 0xAE);
+			sm5451_write_reg(sm5451, SM5451_REG_CTRL_STM_0, 0x90);
+			sm5451_write_reg(sm5451, SM5451_REG_CTRL_STM_3, 0x80);
+			msleep(10);
+			dev_info(sm5451->dev, "%s: ON\n", __func__);
+		}
+	} else {
+		sm5451_write_reg(sm5451, SM5451_REG_PRECHG_MODE, 0x00);
+		dev_info(sm5451->dev, "%s: OFF\n", __func__);
+	}
+
+	return 0;
+}
+
 static int get_apdo_max_power(struct sm5451_charger *sm5451, struct sm_dc_power_source_info *ta)
 {
 	int ret, cnt;
@@ -496,6 +520,7 @@ static int sm5451_start_charging(struct sm5451_charger *sm5451)
 			return ret;
 		}
 		sm5451_init_reg_param(sm5451);
+		sm5451_prechg_enable(sm5451, 1);
 	}
 
 	ret = get_apdo_max_power(sm5451, &ta);
@@ -990,6 +1015,7 @@ static int sm5451_set_charging_enable(struct i2c_client *i2c, bool enable)
 	struct sm5451_charger *sm5451 = i2c_get_clientdata(i2c);
 	struct sm_dc_info *sm_dc = select_sm_dc_info(sm5451);
 
+	sm5451_prechg_enable(sm5451, 0);
 	if (enable) {
 		if (sm_dc->ta.v_max < SM_DC_BYPASS_TA_MAX_VOL)
 			sm5451_set_op_mode(sm5451, OP_MODE_FW_BYPASS);

@@ -82,6 +82,8 @@ static void subsystem_detect_sleep_error(
 		/* increase fatal count in case of same as prev exit */
 		if (duration == debug_info->prev_duration)
 			debug_info->fatal_count++;
+		else
+			debug_info->error_count = debug_info->fatal_count = 0;
 
 		pr_info("%s : error count %d, fatal count %d, ssr count %d\n",
 			debug_info->name, debug_info->error_count,

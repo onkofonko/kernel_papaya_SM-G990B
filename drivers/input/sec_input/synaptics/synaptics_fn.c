@@ -2102,6 +2102,21 @@ void synaptics_ts_set_cover_type(struct synaptics_ts_data *ts, bool enable)
 
 int synaptics_ts_set_temperature(struct device *dev, u8 temperature_data)
 {
+	struct synaptics_ts_data *ts = dev_get_drvdata(dev);
+	int ret;
+
+	if(ts->plat_data->not_support_temp_noti) {
+		input_info(true, &ts->client->dev, "%s: SKIP! temp:%d\n",
+					__func__, temperature_data);
+		return -1;
+	}
+
+	ret = synaptics_ts_set_dynamic_config(ts, DC_TSP_SET_TEMP, temperature_data);
+	if (ret < 0) {
+		input_err(true, &ts->client->dev, "%s: failed to set temperature_data(%d)\n",
+					__func__, temperature_data);
+	}
+
 	return 0;
 }
 

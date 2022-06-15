@@ -7,6 +7,7 @@
 
 #include <linux/kthread.h>
 #include <linux/kdev_t.h>
+#include <linux/device.h>
 
 #define MAX_INTENSITY		10000
 #define MAX_TIMEOUT		10000

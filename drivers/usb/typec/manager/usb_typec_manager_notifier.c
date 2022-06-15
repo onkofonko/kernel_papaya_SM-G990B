@@ -765,7 +765,7 @@ __visible_for_testing int manager_handle_pdic_notification(struct notifier_block
 		break;
 	case PDIC_NOTIFY_ID_CLEAR_INFO:
 		if (p_noti.sub1 == PDIC_NOTIFY_ID_SVID_INFO)
-			typec_manager.svid_info = 0;
+			typec_manager.svid_info = -1;
 		break;
 	case PDIC_NOTIFY_ID_INITIAL:
 		return 0;
@@ -779,6 +779,7 @@ __visible_for_testing int manager_handle_pdic_notification(struct notifier_block
 	return ret;
 }
 
+#if !IS_ENABLED(CONFIG_CABLE_TYPE_NOTIFIER)
 static void manager_handle_dedicated_muic(PD_NOTI_ATTACH_TYPEDEF muic_evt)
 {
 #ifdef CONFIG_USE_DEDICATED_MUIC
@@ -841,7 +842,6 @@ static void manager_handle_second_muic(PD_NOTI_ATTACH_TYPEDEF muic_evt)
 		pr_info("%s: Not supported", __func__);
 #endif
 }
-
 
 static void manager_handle_muic(PD_NOTI_ATTACH_TYPEDEF muic_evt)
 {
@@ -982,6 +982,7 @@ __visible_for_testing int manager_handle_muic_notification(struct notifier_block
 	}
 	return 0;
 }
+#endif
 
 #if IS_ENABLED(CONFIG_VBUS_NOTIFIER)
 __visible_for_testing int manager_handle_vbus_notification(struct notifier_block *nb,
@@ -1141,11 +1142,14 @@ int manager_notifier_register(struct notifier_block *nb, notifier_fn_t notifier,
 			pdic_event_id_string(m_noti.id),
 			m_noti.sub3, m_noti.sub1 ? "Attached" : "Detached");
 		nb->notifier_call(nb, m_noti.id, &(m_noti));
-		m_noti.id = PDIC_NOTIFY_ID_SVID_INFO;
-		m_noti.sub1 = typec_manager.svid_info;
-		m_noti.sub2 = 0;
-		m_noti.sub3 = 0;
-		nb->notifier_call(nb, m_noti.id, &(m_noti));
+		if (typec_manager.svid_info >= 0) {
+			m_noti.dest = PDIC_NOTIFY_DEV_ALL;
+			m_noti.id = PDIC_NOTIFY_ID_SVID_INFO;
+			m_noti.sub1 = typec_manager.svid_info;
+			m_noti.sub2 = 0;
+			m_noti.sub3 = 0;
+			nb->notifier_call(nb, m_noti.id, &(m_noti));
+		}
 #else
 		pr_info("%s: [BATTERY] Registration completed\n", __func__);
 #endif
@@ -1417,6 +1421,7 @@ static int manager_notifier_init(void)
 	typec_manager.water.wVbus_det = 0;
 	typec_manager.water.detOnPowerOff = 0;
 	typec_manager.alt_is_support = 0;
+	typec_manager.svid_info = -1;
 	strncpy(typec_manager.fac_control,
 		"On_All", sizeof(typec_manager.fac_control)-1);
 	typec_manager.usb_factory = check_factory_mode_boot();

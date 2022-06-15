@@ -232,6 +232,8 @@ const struct file_operations ops_name = {				\
 #define SW_PEN_INSERT		0x13  /* set = pen insert, remove */
 #endif
 
+#define EXYNOS_DISPLAY_INPUT_NOTIFIER ((IS_ENABLED(CONFIG_EXYNOS_DPU30) || IS_ENABLED(CONFIG_DRM_SAMSUNG_DPU)) && IS_ENABLED(CONFIG_PANEL_NOTIFY))
+
 enum grip_write_mode {
 	G_NONE				= 0,
 	G_SET_EDGE_HANDLER		= 1,
@@ -709,6 +711,7 @@ struct sec_ts_plat_data {
 	bool not_support_io_ldo;
 	bool not_support_vdd;
 	bool sense_off_when_cover_closed;
+	bool not_support_temp_noti;
 
 	struct completion resume_done;
 	struct wakeup_source *sec_ws;
@@ -781,3 +784,7 @@ int sec_input_notify(struct notifier_block *nb, unsigned long noti, void *v);
 int sec_input_self_request_notify(struct notifier_block *nb);
 int sec_input_enable_device(struct input_dev *dev);
 int sec_input_disable_device(struct input_dev *dev);
+void stui_tsp_init(int (*stui_tsp_enter)(void), int (*stui_tsp_exit)(void), int (*stui_tsp_type)(void));
+int stui_tsp_enter(void);
+int stui_tsp_exit(void);
+int stui_tsp_type(void);

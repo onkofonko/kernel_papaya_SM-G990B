@@ -269,6 +269,7 @@ enum dynamic_tcm_config_id {
 
 enum custom_dynamic_config_id {
 	DC_TSP_SNR_TEST_FRAMES = 0xe1,
+	DC_TSP_SET_TEMP = 0xe4,
 };
 
 

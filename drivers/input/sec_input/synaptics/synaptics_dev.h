@@ -1657,6 +1657,7 @@ int synaptics_ts_wait_for_echo_event(struct synaptics_ts_data *ts, u8 *cmd, u8 c
 int synaptics_ts_fw_wait_for_event(struct synaptics_ts_data *ts, u8 *result, u8 result_cnt);
 int synaptics_ts_tclm_execute_force_calibration(struct i2c_client *client, int cal_mode);
 void synaptics_ts_checking_miscal(struct synaptics_ts_data *ts);
+void synaptics_ts_external_func(struct synaptics_ts_data *ts);
 
 /* for vendor */
 #if !IS_ENABLED(CONFIG_SAMSUNG_PRODUCT_SHIP)

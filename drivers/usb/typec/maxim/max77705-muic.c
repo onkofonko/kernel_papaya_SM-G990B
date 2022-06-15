@@ -1177,8 +1177,9 @@ static int max77705_muic_handle_detach(struct max77705_muic_data *muic_data, int
 	muic_data->is_afc_reset = false;
 	muic_data->is_skip_bigdata = false;
 	muic_data->is_usb_fail = false;
-	muic_data->pdata->afc_disabled_updated = MAX77705_MUIC_AFC_STATUS_CLEAR;
 	cancel_delayed_work_sync(&(muic_data->afc_work));
+	muic_data->pdata->afc_disabled_updated = MAX77705_MUIC_AFC_STATUS_CLEAR;
+	muic_afc_request_cause_clear();
 #endif
 
 	if (muic_data->attached_dev == ATTACHED_DEV_NONE_MUIC) {

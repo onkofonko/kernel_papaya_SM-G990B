@@ -586,18 +586,11 @@ void sec_bat_wireless_uno_cntl(struct sec_battery_info *battery, bool en)
 	union power_supply_propval value = {0, };
 
 	value.intval = en;
-	battery->uno_en = value.intval;
+	battery->uno_en = en;
 	pr_info("@Tx_Mode %s: Uno control %d\n", __func__, battery->uno_en);
 
-	if (value.intval) {
-		psy_do_property(battery->pdata->wireless_charger_name, set,
-			POWER_SUPPLY_EXT_PROP_WIRELESS_TX_ENABLE, value);
-	} else {
-		psy_do_property(battery->pdata->wireless_charger_name, set,
-			POWER_SUPPLY_EXT_PROP_WIRELESS_RX_CONNECTED, value);
-		psy_do_property("otg", set,
-			POWER_SUPPLY_EXT_PROP_CHARGE_UNO_CONTROL, value);
-	}
+	psy_do_property(battery->pdata->wireless_charger_name, set,
+		POWER_SUPPLY_EXT_PROP_WIRELESS_TX_ENABLE, value);
 }
 
 void sec_bat_wireless_iout_cntl(struct sec_battery_info *battery, int uno_iout, int mfc_iout)

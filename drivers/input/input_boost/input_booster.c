@@ -436,7 +436,7 @@ void release_timeout_func(struct work_struct* work)
 		return;
 
 	pr_info(ITAG" Release Timeout Func :::: Unique_Id(%d)", target_ib->uniq_id);
-
+	mutex_lock(&sip_rel_lock);
 	for (res_type = 0; res_type < allowed_res_count; res_type++) {
 		res = target_ib->ib_dt->res[allowed_resources[res_type]];
 
@@ -478,6 +478,7 @@ void release_timeout_func(struct work_struct* work)
 	mutex_unlock(&rel_ib_lock);
 
 	remove_ib_instance(target_ib);
+	mutex_unlock(&sip_rel_lock);
 
 }
 

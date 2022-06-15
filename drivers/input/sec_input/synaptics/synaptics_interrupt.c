@@ -949,6 +949,8 @@ irqreturn_t synaptics_ts_irq_thread(int irq, void *ptr)
 		remain_event_count--;
 	} while (remain_event_count > 0);
 
+	synaptics_ts_external_func(ts);
+
 	mutex_unlock(&ts->eventlock);
 
 	return IRQ_HANDLED;
